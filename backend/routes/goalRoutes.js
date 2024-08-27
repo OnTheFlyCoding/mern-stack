@@ -4,12 +4,17 @@ const express = require('express')
 //router object lets you organize your responces and how they work
 const router = express.Router()
 //bring function from controllers
-const {getGoal, postGoal, updateGoal, deleteGoal} = require('../controllers/goalControllers')
+const {getGoal, setGoal, updateGoal, deleteGoal} = require('../controllers/goalControllers')
 //Route different responses back to the server.js file 
-router.get('/',getGoal)
 
-router.post('/',postGoal)
-router.put('/:id',updateGoal)
-router.delete('/:id',deleteGoal)
+
+// router.get('/',getGoal)
+// router.post('/',postGoal)
+router.route('/').get(getGoal).post(setGoal)
+router.route('/:id').delete(deleteGoal).put(updateGoal)
+// router.put('/:id',updateGoal)
+// router.delete('/:id',deleteGoal)
+
+
 //export info to server from router
 module.exports = router
