@@ -1,21 +1,15 @@
 //Each resource in the api will have its own Route file.
 //Bring express in, to use the express router
 const express = require('express')
-
+//router object lets you organize your responces and how they work
 const router = express.Router()
-//listen for api requests and respond with info
-//Route response back to the server.js file
-router.get('/',(req,res) =>{
-    res.status(200).json({message : 'Get Goals'})
-})
-router.post('/',(req,res) =>{
-    res.status(200).json({message : 'Set Goals'})
-})
-router.put('/:id',(req,res) =>{
-    res.status(200).json({message : `Update goal ${req.params.id}`})
-})
-router.delete('/:id',(req,res) =>{
-    res.status(200).json({message : `Delete goal ${req.params.id}`})
-})
+//bring function from controllers
+const {getGoal, postGoal, updateGoal, deleteGoal} = require('../controllers/goalControllers')
+//Route different responses back to the server.js file 
+router.get('/',getGoal)
 
+router.post('/',postGoal)
+router.put('/:id',updateGoal)
+router.delete('/:id',deleteGoal)
+//export info to server from router
 module.exports = router
