@@ -7,7 +7,13 @@ const getGoal = ((req,res)=>{
 // @desc Set Goals
 // @route POST /api/goals
 // @access Private
-const postGoal = ((req,res)=>{
+const setGoal = ((req,res)=>{
+    //Check if user doesnt send body message, if so send error
+    if(!req.body.text){
+        res.status(400)
+        throw new Error('Please add a text field')
+        
+    }
     res.status(200).json({message:'Set Goals'})
 })
 // @desc Update Goals
@@ -25,5 +31,5 @@ const deleteGoal = ((req,res)=>{
 
 //export your functionality to get routed back to the frontend
 module.exports = {
-    getGoal, postGoal, updateGoal, deleteGoal,
+    getGoal, setGoal, updateGoal, deleteGoal,
 }
