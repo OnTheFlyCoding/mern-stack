@@ -1,9 +1,14 @@
-//add backend framework
+//add backend framework so things can be used on any page
 const express = require('express')
+//add mondoose
+const connectDb = require('./config/db')
+const colors = require('colors')
 //Set env variables
 const  dotenv = require('dotenv').config()
 //Designate port # to server
 const port = process.env.PORT || 5000
+
+connectDb()
 //Initialize express
 const app = express()
 //Bring in error handlers
