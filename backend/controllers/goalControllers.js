@@ -1,10 +1,13 @@
 const asyncHandler = require('express-async-handler')
-
+//Instance for mongoose models to prefrom tasks
+const Goal = require('../models/goalModel')
 // @desc Get Goals
 // @route GET /api/goals
 // @access Private
 const getGoal = asyncHandler(async (req,res)=>{
-    res.status(200).json({message : 'Get Goals'})
+    const goals = await Goal.find({})
+    //waiting to retrieve data in the form of an obj.
+    res.status(200).json(goals)
 })
 // @desc Set Goals
 // @route POST /api/goals
