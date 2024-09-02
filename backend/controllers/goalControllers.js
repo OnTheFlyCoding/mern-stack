@@ -41,8 +41,14 @@ const updateGoal = asyncHandler(async (req,res)=>{
 // @route DELETE /api/goals/:id
 // @access Private
 const deleteGoal = asyncHandler(async (req,res)=>{
-
-    res.status(200).json({id : req.params.id})
+    const goal = await Goal.findById(req.params.id)
+    console.log(goal)
+    if(!goal){
+        res.status(400)
+        throw new Error('No Goal found with that ID')
+    }
+    await goal.deleteOne()
+    res.status(200).json({id:req.params.id})
 })
 
 //export your functionality to get routed back to the frontend
