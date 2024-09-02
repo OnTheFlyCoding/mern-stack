@@ -5,27 +5,21 @@ const Goal = require('../models/goalModel')
 // @route GET /api/goals
 // @access Private
 const getGoal = asyncHandler(async (req,res)=>{
-    const goal = await Goal.find({})
+    const goals = await Goal.find({})
     //waiting to retrieve data in the form of an obj.
-    res.status(200).json(goal)
+    res.status(200).json(goals)
 })
 // @desc Set Goals
 // @route POST /api/goals
 // @access Private
 const setGoal = asyncHandler(async (req,res)=>{
     //Check if user doesnt send body message, if so send error
-
     if(!req.body.text){
         res.status(400)
         throw new Error('Please add a text field')
         
     }
-    //If text field given: excute the following
-    // create a goal using the users input
-    const goal = await Goal.create({
-        text: req.body.text
-    })
-    res.status(200).json(goal)
+    res.status(200).json({message:'Set Goals'})
 })
 // @desc Update Goals
 // @route PUT /api/goals/:id
