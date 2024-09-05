@@ -1,3 +1,4 @@
+//functions for goals
 const asyncHandler = require('express-async-handler')
 //Instance for mongoose models to prefrom tasks
 const Goal = require('../models/goalModel')
@@ -19,7 +20,10 @@ const setGoal = asyncHandler(async (req,res)=>{
         throw new Error('Please add a text field')
         
     }
-    res.status(200).json({message:'Set Goals'})
+    const goal = await Goal.create({
+        text: req.body.text,
+    })
+    res.status(200).json(goal)
 })
 // @desc Update Goals
 // @route PUT /api/goals/:id
