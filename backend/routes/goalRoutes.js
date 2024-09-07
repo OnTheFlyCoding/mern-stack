@@ -5,13 +5,16 @@ const express = require('express')
 const router = express.Router()
 //bring function from controllers
 const {getGoal, setGoal, updateGoal, deleteGoal} = require('../controllers/goalControllers')
+
+const {protect} = require('../middleware/authMiddleware')
+
 //Route different responses back to the server.js file 
 
 
 // router.get('/',getGoal)
 // router.post('/',postGoal)
-router.route('/').get(getGoal).post(setGoal)
-router.route('/:id').delete(deleteGoal).put(updateGoal)
+router.route('/').get(protect, getGoal).post( protect, setGoal)
+router.route('/:id').delete( protect, deleteGoal).put(protect, updateGoal)
 // router.put('/:id',updateGoal)
 // router.delete('/:id',deleteGoal)
 
