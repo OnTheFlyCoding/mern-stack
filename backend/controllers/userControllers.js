@@ -30,10 +30,11 @@ const registerUser = asyncHandler(async (req, res) =>{
     })
     if(user){
         res.status(201).json({
+            //user.id is created during User.create
             _id: user.id,
             name: user.name,
             email: user.email,
-            token: generateToken(user.id),
+            token: generateToken(user._id),
         })
 
     } else{
@@ -54,7 +55,7 @@ const loginUser = asyncHandler(async (req, res) =>{
             _id: user.id,
             name: user.name,
             email: user.email,
-            token: generateToken(user.id),
+            token: generateToken(user._id),
         })
     } else{
         res.status(400)

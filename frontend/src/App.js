@@ -1,5 +1,8 @@
 import React from 'react';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import {ToastContainer} from 'react-toastify'
+//styling
+import 'react-toastify/ReactToastify.css'
 //import pages
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
@@ -22,11 +25,10 @@ function App() {
           </Routes>
         </div>
       </Router>
-
-
+      <ToastContainer/>
     </>
 
-  );
+  )
 }
 
 export default App;

@@ -8,7 +8,7 @@ const {
 } = require('../controllers/userControllers')
 const {protect} = require('../middleware/authMiddleware')
 //ROUTES
-// (root/: api/users/)
+// (root/: /api/users/)
 router.post('/', registerUser)
 router.post('/login', loginUser)
 router.get('/me', protect, getMe)

@@ -1,21 +1,55 @@
-import React from 'react';
+//Select something from the state(isLoading.etc)
+//dispatch a function(register) or reset
+//function from our reducer
+import {useSelector, useDispatch} from 'react-redux'
+import {toast} from 'react-toastify'
+import {useNavigate} from 'react-router-dom'
 import {useState, useEffect} from 'react'
 import {FaUser} from 'react-icons/fa'
-function Register(){
+//import features
+import {register, reset} from '../features/auth/authSlice'
+//Componenets
+import Spinner from '../components/Spinner'
 
+//Logic for registering a user
+function Register(){
     //Create your form fields that will be expected by the backend.
+
+    //The fields
     //[0] the data entered. [1] the function to handle the data
-    //Declare the field names as empty strings that will be propogated with data.
+
+    //The values will be propgated with input on each field IRT.
     const [formData, setData] = useState({
-        name:'',
-        email:'',
-        password:'',
-        password2:''
+        name: '',
+        email: '',
+        password: '',
+        password2: ''
 
     })
     //unpack data to use
     const {name, email, password, password2} = formData
     //Functions for form and register page:
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    //use the values assosciated with a state we defined
+    const {user, isLoading, isError, isSuccess, message} = useSelector((state) => state.auth )
+
+    //if any of the values change during the process [dependecies] dictate a change
+    useEffect(()=>{
+        if(isError) {
+            toast.error(message)
+        }
+        //if user is true, means they have registered or are logged in, redirect
+        if(isSuccess || user) {
+            //redirect to home page
+            navigate('/')
+        }
+        //useEffect fires during a change, once change has been made,
+        //reset the values of the state
+        dispatch(reset())
+    }, [user, isError, isSuccess, message, dispatch, navigate])
+
+
 
     //When something changes in the input, the onChange function will get called.
     //Takes the previous state of the fields from each individual field, references
@@ -25,10 +59,25 @@ function Register(){
             ...prevState,
             [e.target.name]: e.target.value,
         }))
-    };
+    }
     //Decide what to do with the data
     const onSubmit = (e) => {
         e.preventDefault()
+        if(password !== password2){
+            toast.error('Passwords do not match')
+        } else {
+            //data coming from the form not including the confirmed password
+            const userData = {
+                name,
+                email,
+                password,
+            }
+            //if criteria is met, 
+            dispatch(register(userData))
+        }
+    }
+    if(isLoading){
+        return <Spinner/>  
     }
 
     return(

@@ -18,8 +18,8 @@ app.use(express.json())
 app.use(express.urlencoded({extended : false}))
 
 //*ROUTES* access express router to respond to the request coming from the front-end
-app.use('/api/goals', require('./routes/goalRoutes'))
-app.use('/api/users', require('./routes/userRoutes'))
+app.use('/api/goals/', require('./routes/goalRoutes'))
+app.use('/api/users/', require('./routes/userRoutes'))
 //runs after to catch the errors sent to the server
 app.use(errorHandler)
 //Call app function to listen on port
