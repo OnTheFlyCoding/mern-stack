@@ -1,6 +1,6 @@
 import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import {Link} from 'react-router-dom';
-
+//create your Header tag using headerTag and other tags to design your header.
 function Header(){
     return(
         // return a header that contains links to login and register page
