@@ -1,6 +1,13 @@
 import React from 'react';
 import {useState, useEffect} from 'react'
 import {FaSignInAlt} from 'react-icons/fa'
+import {useSelector, useDispatch} from 'react-redux'
+import {useNavigate} from 'react-router-dom'
+import {toast} from 'react-toastify'
+import {login, reset}  from '../features/auth/authSlice'
+import Spinner from '../components/Spinner'
+
+
 function Login(){
 
     //Create your form fields that will be expected by the backend.
@@ -15,6 +22,27 @@ function Login(){
     //unpack data to use
     const { email, password} = formData
     //Functions for form and register page:
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    
+    //State value used to determine course of action
+    const {user, isLoading, isError, isSuccess, message} = useSelector(
+        (state) => state.auth )
+
+    //if any of the values change during the process [dependecies] dictate a change
+    useEffect(()=>{
+        if(isError) {
+            toast.error(message)
+        }
+        //if user is true, means they have registered or are logged in, redirect
+        if(isSuccess || user) {
+            //redirect to home page
+            navigate('/')
+        }
+        //useEffect fires during a change, once change has been made,
+        //reset the values of the state
+        dispatch(reset())
+    }, [user, isError, isSuccess, message, dispatch, navigate])
 
     //When something changes in the input, the onChange function will get called.
     //Takes the previous state of the fields from each individual field, references
@@ -28,6 +56,18 @@ function Login(){
     //Decide what to do with the data
     const onSubmit = (e) => {
         e.preventDefault()
+        if(!email || !password) {
+            toast.error('Please fill in all fields!')
+        }else{
+            const userData = {
+                email,
+                password
+            }
+            dispatch(login(userData))
+        }
+    }
+    if(isLoading){
+        return <Spinner/>  
     }
 
     return(

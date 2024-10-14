@@ -1,6 +1,6 @@
 //Select something from the state(isLoading.etc)
 //dispatch a function(register) or reset
-//function from our reducer
+//function from our reducer 
 import {useSelector, useDispatch} from 'react-redux'
 import {toast} from 'react-toastify'
 import {useNavigate} from 'react-router-dom'
@@ -31,7 +31,7 @@ function Register(){
     //Functions for form and register page:
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    //use the values assosciated with a state we defined
+    //State value used to determine course of action
     const {user, isLoading, isError, isSuccess, message} = useSelector((state) => state.auth )
 
     //if any of the values change during the process [dependecies] dictate a change
