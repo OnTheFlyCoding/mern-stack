@@ -3,9 +3,9 @@ import goalService from './goalService'
 
 const initialState = {
     goals: [],
-    iserror: false,
+    isError: false,
     isSuccess: false,
-    isloading: false,
+    isLoading: false,
     message: '',
 }
 // Create Goal
@@ -22,7 +22,40 @@ export const createGoal = createAsyncThunk('goals/create', async (goalData,thunk
         
     }
 })
+//Get all user related goals
+export const getGoals = createAsyncThunk('goals/getAll',async (_,thunkAPI)=>{
+    try {
+        const token = thunkAPI.getState().auth.user.token
+        return await goalService.getGoals(token)
+        
+    } catch (error) {
+        const message = 
+        (error.response && error.response.data 
+        && error.response.data.message)
+        || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+        
+    }
+})
+//Delete a goal on click
 
+export const deleteGoals = createAsyncThunk('goals/delete', async (id, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token
+        return await goalService.deleteGoal(id,token)
+        
+    } catch (error) {
+        const message = 
+        (error.response && error.response.data 
+        && error.response.data.message)
+        || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+        
+    }
+}
+)
+
+//Slice model
 export const goalSlice = createSlice({
     name: 'goal',
     initialState,
@@ -32,16 +65,44 @@ export const goalSlice = createSlice({
     extraReducers: (builder)=> {
         builder
             .addCase(createGoal.pending, (state)=>{
-                state.isloading = true
+                state.isLoading = true
             })
             .addCase(createGoal.fulfilled, (state, action)=>{
-                state.isloading = false
-                state.isSuccess = false
+                state.isLoading = false
+                state.isSuccess = true
                 state.goals.push(action.payload)
             })
             .addCase(createGoal.rejected, (state, action)=>{
-                state.isloading = false
-                state.iserror = true
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(getGoals.pending, (state)=>{
+                state.isLoading = true
+            })
+            .addCase(getGoals.fulfilled, (state, action)=>{
+                state.isLoading = false
+                state.isSuccess = true
+                state.goals = action.payload   
+            })
+            .addCase(getGoals.rejected, (state, action)=>{
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(deleteGoals.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(deleteGoals.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.goals = state.goals.filter(
+                    (goal) => goal._id !== action.payload.id
+                )
+            })
+            .addCase(deleteGoals.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
                 state.message = action.payload
             })
 

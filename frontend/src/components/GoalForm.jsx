@@ -3,7 +3,7 @@ import { useDispatch  } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import {createGoal} from '../features/goals/goalSlice'
 
-function GoalForm (){
+function GoalForm(){
     const [text, setTxt] = useState('')
     const dispatch = useDispatch()
     const navigate = useNavigate()
