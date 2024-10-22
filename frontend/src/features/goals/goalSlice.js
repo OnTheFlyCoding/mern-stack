@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import goalService from './goalService'
 
 const initialState = {
@@ -8,8 +8,11 @@ const initialState = {
     isLoading: false,
     message: '',
 }
-// Create Goal
-export const createGoal = createAsyncThunk('goals/create', async (goalData,thunkAPI)=>{
+
+// Create new goal
+export const createGoal = createAsyncThunk(
+  'goals/create',
+  async (goalData, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token
         return await goalService.createGoal(goalData, token)
@@ -22,40 +25,7 @@ export const createGoal = createAsyncThunk('goals/create', async (goalData,thunk
         
     }
 })
-//Get all user related goals
-export const getGoals = createAsyncThunk('goals/getAll',async (_,thunkAPI)=>{
-    try {
-        const token = thunkAPI.getState().auth.user.token
-        return await goalService.getGoals(token)
-        
-    } catch (error) {
-        const message = 
-        (error.response && error.response.data 
-        && error.response.data.message)
-        || error.message || error.toString()
-        return thunkAPI.rejectWithValue(message)
-        
-    }
-})
-//Delete a goal on click
 
-export const deleteGoals = createAsyncThunk('goals/delete', async (id, thunkAPI) => {
-    try {
-        const token = thunkAPI.getState().auth.user.token
-        return await goalService.deleteGoal(id,token)
-        
-    } catch (error) {
-        const message = 
-        (error.response && error.response.data 
-        && error.response.data.message)
-        || error.message || error.toString()
-        return thunkAPI.rejectWithValue(message)
-        
-    }
-}
-)
-
-//Slice model
 export const goalSlice = createSlice({
     name: 'goal',
     initialState,
@@ -109,5 +79,5 @@ export const goalSlice = createSlice({
     }
 })
 
-export const {reset} = goalSlice.actions
+export const { reset } = goalSlice.actions
 export default goalSlice.reducer
